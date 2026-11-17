@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light; --font-playfair: 'Playfair Display'; --font-nunito: 'Nunito'; --font-caveat: 'Caveat'; }
+html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+body { @apply bg-cream-50 font-body text-ink-900 antialiased; overflow-x: hidden; }
+::selection { background: #FFD3E0; }
+:focus-visible { outline: 3px solid #D14D7D; outline-offset: 3px; border-radius: 12px; }
+
+/* Scrollbar lembut: jalur krim, pegangan gradien pink bulat */
+html { scrollbar-width: thin; scrollbar-color: #FFB8CD #FFF9E3; }
+*::-webkit-scrollbar { width: 12px; height: 12px; }
+*::-webkit-scrollbar-track { background: #FFF9E3; border-left: 1px solid #F3E3E8; }
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #FFB8CD, #F58FB0);
+  border: 3px solid #FFF9E3;
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #F58FB0, #E96A96); }
+.slim-scroll { scrollbar-width: thin; scrollbar-color: #FFD3E0 transparent; }
+.slim-scroll::-webkit-scrollbar { width: 6px; }
+.slim-scroll::-webkit-scrollbar-track { background: transparent; border: 0; }
+.slim-scroll::-webkit-scrollbar-thumb { background: #FFD3E0; border-radius: 9999px; border: 0; }
+input[type='range'] { -webkit-appearance: none; appearance: none; height: 8px; border-radius: 9999px; background: #FFE3EC; outline-offset: 6px; }
+input[type='range']::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; height: 22px; width: 22px; border-radius: 9999px; background: #E96A96; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(209,77,125,.4); cursor: pointer; }
+input[type='range']::-moz-range-thumb { height: 18px; width: 18px; border-radius: 9999px; background: #E96A96; border: 3px solid #fff; cursor: pointer; }
+*::-webkit-scrollbar-corner { background: #FFF9E3; }
+
+@layer components {
+  .label { @apply text-[12px] font-bold uppercase tracking-[0.18em] text-pink-700; }
+  .h2 { @apply font-display font-semibold leading-[1.15] text-[30px] md:text-[46px]; }
+  .sub { @apply font-semibold leading-relaxed text-ink-600 text-[15px] md:text-[18px]; }
+  .card { @apply bg-white border border-line rounded-lg shadow-soft; }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full font-extrabold text-[17px]
+      transition duration-200 ease-soft select-none cursor-pointer;
+  }
+  .btn:disabled, .btn[aria-disabled='true'] { @apply opacity-50 pointer-events-none; }
+  .btn-p {
+    @apply text-white hover:-translate-y-0.5 active:scale-[.97];
+    background: linear-gradient(180deg, #E96A96, #D14D7D);
+    box-shadow: 0 10px 22px rgba(209, 77, 125, 0.32);
+  }
+  .btn-s { @apply bg-white text-pink-700 border-[1.5px] border-pink-300 hover:-translate-y-0.5 active:scale-[.97]; }
+  .btn-t { @apply bg-butter-100 text-ink-900 hover:-translate-y-0.5 active:scale-[.97]; }
+  .btn-g { @apply h-10 px-3 text-[15px] font-bold text-ink-600 underline decoration-pink-300 underline-offset-4; }
+  .btn-lock { @apply bg-pink-100 text-pink-700; }
+
+  /*
+   * Tiket bertakik: takik adalah LUBANG sungguhan (mask), jadi latar tembus pandang.
+   * Mask memotong bayangan, maka bayangan diberikan lewat drop-shadow pada pembungkus (.ticket-wrap).
+   * Cincin tipis (::before/::after) menggambar garis tepi di sekeliling lubang.
+   */
+  .ticket-wrap { filter: drop-shadow(0 5px 5px rgba(209, 77, 125, 0.09)); }
+  .ticket-wrap-next { filter: drop-shadow(0 8px 9px rgba(209, 77, 125, 0.16)); }
+  .ticket {
+    --tk: #F3E3E8;
+    position: relative; border-radius: 26px; border: 1px solid var(--tk); background: #fff;
+    -webkit-mask:
+      radial-gradient(circle 10px at 0 58%, #0000 98%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 10px at 100% 58%, #0000 98%, #000) right / 51% 100% no-repeat;
+    mask:
+      radial-gradient(circle 10px at 0 58%, #0000 98%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 10px at 100% 58%, #0000 98%, #000) right / 51% 100% no-repeat;
+  }
+  .ticket::before, .ticket::after {
+    content: ''; position: absolute; top: 58%; width: 22px; height: 22px; margin-top: -11px;
+    border-radius: 9999px; border: 1.5px solid var(--tk); pointer-events: none;
+  }
+  .ticket::before { left: -12px; clip-path: inset(0 0 0 50%); }
+  .ticket::after { right: -12px; clip-path: inset(0 50% 0 0); }
+  .ticket-next { --tk: #FFB8CD; background-image: linear-gradient(180deg, #fff, #FFF6F8); }
+
+  /* tiket mendatar: lubang di tengah sisi kiri-kanan dan di garis sobekan (atas-bawah) */
+  .ticket-h {
+    border-radius: 26px; border: 1.5px solid #FFB8CD;
+    -webkit-mask:
+      radial-gradient(circle 13px at 0 50%, #0000 97%, #000),
+      radial-gradient(circle 13px at 100% 50%, #0000 97%, #000),
+      radial-gradient(circle 13px at calc(100% - var(--stub)) 0, #0000 97%, #000),
+      radial-gradient(circle 13px at calc(100% - var(--stub)) 100%, #0000 97%, #000);
+    -webkit-mask-composite: source-in;
+    mask:
+      radial-gradient(circle 13px at 0 50%, #0000 97%, #000),
+      radial-gradient(circle 13px at 100% 50%, #0000 97%, #000),
+      radial-gradient(circle 13px at calc(100% - var(--stub)) 0, #0000 97%, #000),
+      radial-gradient(circle 13px at calc(100% - var(--stub)) 100%, #0000 97%, #000);
+    mask-composite: intersect;
+  }
+
+  /* kupon: lubang di atas dan bawah garis sobekan */
+  .coupon-wrap { filter: drop-shadow(0 4px 5px rgba(209, 77, 125, 0.09)); }
+  .coupon {
+    position: relative; border-radius: 22px; border: 1px solid #F3E3E8; background: #fff;
+    -webkit-mask:
+      radial-gradient(circle 10px at calc(100% - 105px) 0, #0000 98%, #000),
+      radial-gradient(circle 10px at calc(100% - 105px) 100%, #0000 98%, #000);
+    -webkit-mask-composite: source-in;
+    mask:
+      radial-gradient(circle 10px at calc(100% - 105px) 0, #0000 98%, #000),
+      radial-gradient(circle 10px at calc(100% - 105px) 100%, #0000 98%, #000);
+    mask-composite: intersect;
+  }
+  .coupon::before, .coupon::after {
+    content: ''; position: absolute; left: calc(100% - 115px); width: 22px; height: 22px;
+    border-radius: 9999px; border: 1.5px solid #F3E3E8; pointer-events: none;
+  }
+  .coupon::before { top: -12px; clip-path: inset(50% 0 0 0); }
+  .coupon::after { bottom: -12px; clip-path: inset(0 0 50% 0); }
+
+  .chip { @apply inline-flex items-center gap-1.5 h-[34px] px-3.5 rounded-full bg-butter-100 text-[13px] font-bold; }
+  .chip-on { @apply bg-pink-100 border-[1.5px] border-pink-300 text-pink-700; }
+
+  .input {
+    @apply w-full rounded-md bg-white border border-line px-4 py-3 font-semibold text-ink-900 placeholder:text-ink-300
+      focus:outline-none focus:border-pink-400 focus:ring-4 focus:ring-pink-100;
+  }
+
+  .tb { @apply bg-white border border-line rounded-md shadow-soft text-center; }
+  .tb b { @apply block font-display font-semibold leading-none; }
+  .tb span { @apply text-[10px] font-bold uppercase tracking-[0.14em] text-ink-600; }
+
+  .ph {
+    position: relative; overflow: hidden;
+    background: linear-gradient(160deg, #FFD3E0, #FFF3C4);
+  }
+  .ph::before {
+    content: ''; position: absolute; left: 50%; top: 22%; width: 30%; aspect-ratio: 1; transform: translateX(-50%);
+    border-radius: 50%; background: rgba(209, 77, 125, 0.38); z-index: 1;
+  }
+  .ph::after {
+    content: ''; position: absolute; left: 50%; bottom: -18%; width: 70%; height: 62%; transform: translateX(-50%);
+    border-radius: 50% 50% 0 0; background: rgba(209, 77, 125, 0.3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+/* Judul bergaya "tulisan": Playfair Display tegak tebal (menggantikan font skrip lama).
+   font-size-adjust menjaga ukurannya setara dengan font lama agar tata letak tidak berubah. */
+.font-script { font-family: var(--font-playfair), 'Playfair Display', serif; font-style: normal; font-weight: 600; font-size-adjust: 0.4; letter-spacing: 0; }

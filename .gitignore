@@ -1,0 +1,65 @@
+# Dependensi dan hasil build
+node_modules
+.next
+out
+build
+coverage
+*.tsbuildinfo
+next-env.d.ts
+
+# Rahasia dan konfigurasi lokal (hanya .env.example yang boleh ikut)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.vercel
+.supabase
+supabase/.temp
+supabase/.branches
+
+# Alat AI dan asisten kode, termasuk berkas instruksi dan memori (.md)
+.claude/
+.claude-flow/
+.cursor/
+.cursorrules
+.cursorignore
+.windsurf/
+.windsurfrules
+.continue/
+.aider*
+.codex/
+.gemini/
+.copilot/
+.github/copilot-instructions.md
+.roo/
+.cline/
+.clinerules
+.kiro/
+.codeium/
+.serena/
+.taskmaster/
+.specstory/
+.mcp.json
+CLAUDE.md
+CLAUDE.local.md
+AGENTS.md
+GEMINI.md
+COPILOT.md
+MEMORY.md
+memory/
+
+# Dokumen perancangan dan mockup: berisi rencana serta isi kejutan, jadi tidak ikut ke repo
+docs/
+UI UX/
+
+# Sistem operasi, editor, dan log
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+yarn-debug.log*
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp

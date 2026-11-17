@@ -1,0 +1,3 @@
+Letakkan rekaman suara printer asli di sini dengan nama print.mp3 (atau print.wav / print.ogg).
+Bila berkas ada, tiket memutarnya saat dicetak; bila tidak, situs memakai suara sintetis.
+Durasi ideal 3-5 detik. Pastikan kamu berhak memakai rekamannya.
